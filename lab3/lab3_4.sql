@@ -1,6 +1,6 @@
 --1.
 INSERT INTO type_dish VALUES (0, 'первые блюда');
-INSERT INTO `type_dish`(`id_type_dish`, `name`) VALUES (2, 'вторые блюда');
+INSERT INTO `type_dish`(`name`) VALUES ('вторые блюда');
 INSERT INTO dish (id_type_dish) SELECT id_type_dish FROM type_dish;
 
 --2.
