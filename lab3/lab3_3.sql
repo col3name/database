@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 22 2018 г., 09:57
+-- Время создания: Фев 22 2018 г., 15:45
 -- Версия сервера: 5.5.48
 -- Версия PHP: 7.0.4
 
@@ -29,11 +29,9 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `dish` (
   `id_dish` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
-  `id_recipe` int(11) unsigned NOT NULL,
-  `id_product` int(11) unsigned NOT NULL,
   `id_type_dish` int(11) unsigned NOT NULL,
   `weight` int(11) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -45,6 +43,26 @@ CREATE TABLE IF NOT EXISTS `product` (
   `id_product` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `calorific` int(11) unsigned NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `product`
+--
+
+INSERT INTO `product` (`id_product`, `name`, `calorific`) VALUES
+(1, 'Рис', 132),
+(3, 'Морковь', 50);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `product_in_recipe`
+--
+
+CREATE TABLE IF NOT EXISTS `product_in_recipe` (
+  `id_product_in_recipe` int(11) unsigned NOT NULL,
+  `id_recipe` int(11) unsigned NOT NULL,
+  `id_product` int(11) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -55,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 
 CREATE TABLE IF NOT EXISTS `recipe` (
   `id_recipe` int(11) unsigned NOT NULL,
+  `id_dish` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -68,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 CREATE TABLE IF NOT EXISTS `type_dish` (
   `id_type_dish` int(11) unsigned NOT NULL,
   `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Индексы сохранённых таблиц
@@ -79,8 +98,6 @@ CREATE TABLE IF NOT EXISTS `type_dish` (
 --
 ALTER TABLE `dish`
   ADD PRIMARY KEY (`id_dish`),
-  ADD KEY `id_recipe` (`id_recipe`),
-  ADD KEY `id_product` (`id_product`),
   ADD KEY `id_type_dish` (`id_type_dish`);
 
 --
@@ -88,6 +105,12 @@ ALTER TABLE `dish`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id_product`);
+
+--
+-- Индексы таблицы `product_in_recipe`
+--
+ALTER TABLE `product_in_recipe`
+  ADD PRIMARY KEY (`id_product_in_recipe`);
 
 --
 -- Индексы таблицы `recipe`
@@ -109,12 +132,17 @@ ALTER TABLE `type_dish`
 -- AUTO_INCREMENT для таблицы `dish`
 --
 ALTER TABLE `dish`
-  MODIFY `id_dish` int(11) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_dish` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT для таблицы `product`
 --
 ALTER TABLE `product`
-  MODIFY `id_product` int(11) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_product` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT для таблицы `product_in_recipe`
+--
+ALTER TABLE `product_in_recipe`
+  MODIFY `id_product_in_recipe` int(11) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `recipe`
 --
@@ -124,7 +152,7 @@ ALTER TABLE `recipe`
 -- AUTO_INCREMENT для таблицы `type_dish`
 --
 ALTER TABLE `type_dish`
-  MODIFY `id_type_dish` int(11) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_type_dish` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
@@ -133,9 +161,7 @@ ALTER TABLE `type_dish`
 -- Ограничения внешнего ключа таблицы `dish`
 --
 ALTER TABLE `dish`
-  ADD CONSTRAINT `dish_ibfk_5` FOREIGN KEY (`id_type_dish`) REFERENCES `type_dish` (`id_type_dish`),
-  ADD CONSTRAINT `dish_ibfk_1` FOREIGN KEY (`id_recipe`) REFERENCES `recipe` (`id_recipe`),
-  ADD CONSTRAINT `dish_ibfk_4` FOREIGN KEY (`id_product`) REFERENCES `product` (`id_product`);
+  ADD CONSTRAINT `dish_ibfk_5` FOREIGN KEY (`id_type_dish`) REFERENCES `type_dish` (`id_type_dish`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
